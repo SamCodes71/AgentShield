@@ -75,7 +75,6 @@ def scan_html(
     body: ScanRequest,
     request: Request,
     response: Response,
-    api_key: str = Depends(verify_api_key_or_session_or_demo),
 ):
     effective_api_key = api_key
     demo_cookie_created = False
@@ -196,7 +195,6 @@ def scan_url(
 def get_history(
     request: Request,
     limit: int = Query(20, ge=1),
-    api_key: str = Depends(verify_api_key_or_session_or_demo),
 ):
     limit = min(limit, 100)
     effective_api_key = api_key

@@ -11,9 +11,12 @@ import hashlib
 import hmac
 import json
 import base64
+import logging
 from pathlib import Path
 
 from runtime_config import DATA_DIR
+
+logger = logging.getLogger(__name__)
 
 
 def _is_production_environment() -> bool:
@@ -35,7 +38,11 @@ def _load_session_secret() -> str:
     if configured:
         return configured
     if _is_production_environment():
-        raise RuntimeError("GUNI_SESSION_SECRET must be set in production.")
+        logger.warning(
+            "GUNI_SESSION_SECRET is not set; using a temporary in-memory session secret. "
+            "Existing sessions will be invalid after restart."
+        )
+        return secrets.token_urlsafe(32)
 
     secret_path = Path(DATA_DIR) / "session_secret.txt"
     try:

@@ -101,7 +101,10 @@ async def websocket_scan_endpoint(websocket: WebSocket, goal: str = "browse webs
                 "url":  url,
             })
 
-            usage = db_get_usage(api_key)
+            try:
+                usage = db_get_usage(api_key)
+            except Exception:
+                usage = None
             if usage and int(usage.get("monthly_limit", 0)) > 0:
                 if int(usage.get("scans_used", 0)) >= int(usage.get("monthly_limit", 0)):
                     await websocket.send_json({

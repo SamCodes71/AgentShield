@@ -18,6 +18,7 @@ from pydantic import BaseModel, field_validator
 
 from api.auth import verify_api_key, verify_api_key_or_session
 from api.config import load_settings, validate_runtime_settings
+from api.database import DatabaseUnavailable
 from api.input_validation import (
     StrictRequestModel,
     sanitize_choice,
@@ -165,7 +166,11 @@ def _session_user(request: Request):
     payload = decode_session(session) if session else None
     if not payload:
         return None
-    user = db_get_user_by_email(payload.get("email", ""))
+    try:
+        user = db_get_user_by_email(payload.get("email", ""))
+    except Exception as exc:
+        logger.warning("Session lookup skipped because database is unavailable: %s", exc)
+        return None
     if not user:
         return None
     if int(payload.get("sv", 0) or 0) != int(user.get("session_version", 0) or 0):
@@ -315,6 +320,15 @@ async def validation_exception_handler(request: Request, exc: RequestValidationE
     return JSONResponse(status_code=422, content=_json_payload(False, {}, _validation_error_message(exc)))
 
 
+@app.exception_handler(DatabaseUnavailable)
+async def database_unavailable_handler(request: Request, exc: DatabaseUnavailable):
+    log_system_event("database.unavailable", "503", details=str(exc), path=request.url.path)
+    message = "Database-backed features are temporarily unavailable."
+    if not _is_api_json_path(request.url.path):
+        return HTMLResponse(content=f"<html><body><h1>Service unavailable</h1><p>{message}</p></body></html>", status_code=503)
+    return JSONResponse(status_code=503, content=_json_payload(False, {}, message))
+
+
 def _render_error_page(page_name: str, status_code: int) -> HTMLResponse:
     response = render_dashboard_page(page_name, f"<h1>{status_code}</h1>")
     return HTMLResponse(content=response.body.decode("utf-8"), status_code=status_code)
@@ -396,8 +410,26 @@ async def add_security_headers(request: Request, call_next):
 
 
 mount_dashboard_assets(app)
-from api.database import init_db
-init_db()
+
+
+@app.on_event("startup")
+def startup_init_database():
+    try:
+        from api.database import init_db
+
+        if init_db():
+            logger.info("Database initialized.")
+        else:
+            logger.warning("Database initialization skipped; database-backed features are disabled.")
+    except Exception as exc:
+        logger.warning("Database initialization failed; continuing startup with limited features: %s", exc)
+
+
+@app.get("/", include_in_schema=False)
+def root_health():
+    return {"status": "ok", "service": "AgentShield"}
+
+
 app.include_router(public_pages_router)
 app.include_router(scanning_router)
 app.include_router(threats_router)

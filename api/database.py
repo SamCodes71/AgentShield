@@ -9,19 +9,27 @@ for local tests that should run without a real MongoDB server.
 from __future__ import annotations
 
 import json
+import logging
 import os
 import time
 from urllib.parse import urlparse
 
 from pymongo import ASCENDING, DESCENDING, MongoClient
 from pymongo.collection import ReturnDocument
-from pymongo.errors import DuplicateKeyError, OperationFailure
+from pymongo.errors import DuplicateKeyError, OperationFailure, PyMongoError
 
 from runtime_config import DB_PATH, MONGO_DB_NAME, MONGO_URI
 
 
 _CLIENT = None
 _DB = None
+_DB_AVAILABLE = None
+_DB_ERROR = None
+logger = logging.getLogger(__name__)
+
+
+class DatabaseUnavailable(RuntimeError):
+    """Raised when database-backed features are requested while MongoDB is unavailable."""
 
 
 def _now() -> str:
@@ -38,8 +46,23 @@ def _use_mock_mongo() -> bool:
     }
 
 
+def _is_managed_deploy_environment() -> bool:
+    markers = (
+        os.environ.get("RAILWAY_ENVIRONMENT"),
+        os.environ.get("RAILWAY_PROJECT_ID"),
+        os.environ.get("RAILWAY_SERVICE_ID"),
+        os.environ.get("RENDER"),
+        os.environ.get("RENDER_SERVICE_ID"),
+    )
+    return any((marker or "").strip() for marker in markers)
+
+
 def _mongo_uri() -> str:
-    return MONGO_URI or f"mongodb://localhost:27017/{MONGO_DB_NAME}"
+    if MONGO_URI:
+        return MONGO_URI
+    if _is_managed_deploy_environment():
+        return ""
+    return os.environ.get("GUNI_LOCAL_MONGO_URI", f"mongodb://127.0.0.1:27017/{MONGO_DB_NAME}")
 
 
 def _default_db_name() -> str:
@@ -66,20 +89,50 @@ def _collections():
 
 
 def get_db():
-    global _CLIENT, _DB
+    global _CLIENT, _DB, _DB_AVAILABLE, _DB_ERROR
     if _DB is not None:
         return _DB
+    if _DB_AVAILABLE is False:
+        raise DatabaseUnavailable(_DB_ERROR or "MongoDB is unavailable.")
 
-    if _use_mock_mongo():
-        import mongomock
+    try:
+        if _use_mock_mongo():
+            import mongomock
 
-        _CLIENT = mongomock.MongoClient()
-    else:
-        _CLIENT = MongoClient(_mongo_uri(), serverSelectionTimeoutMS=5000)
-        _CLIENT.admin.command("ping")
+            _CLIENT = mongomock.MongoClient()
+        else:
+            mongo_uri = _mongo_uri()
+            if not mongo_uri:
+                raise DatabaseUnavailable("GUNI_MONGO_URI or MONGO_URI is not configured.")
+            _CLIENT = MongoClient(mongo_uri, serverSelectionTimeoutMS=5000)
+            _CLIENT.admin.command("ping")
 
-    _DB = _CLIENT[_default_db_name()]
-    return _DB
+        _DB = _CLIENT[_default_db_name()]
+        _DB_AVAILABLE = True
+        _DB_ERROR = None
+        return _DB
+    except DatabaseUnavailable as exc:
+        _CLIENT = None
+        _DB = None
+        _DB_AVAILABLE = False
+        _DB_ERROR = str(exc)
+        logger.warning("MongoDB unavailable: %s", exc)
+        raise
+    except PyMongoError as exc:
+        _CLIENT = None
+        _DB = None
+        _DB_AVAILABLE = False
+        _DB_ERROR = str(exc)
+        logger.warning("MongoDB unavailable: %s", exc)
+        raise DatabaseUnavailable(str(exc)) from exc
+
+
+def is_database_available() -> bool:
+    try:
+        get_db()
+        return True
+    except DatabaseUnavailable:
+        return False
 
 
 def _next_counter(name: str) -> int:
@@ -114,7 +167,10 @@ def _docs_with_id(rows) -> list[dict]:
 
 
 def init_db():
-    cols = _collections()
+    try:
+        cols = _collections()
+    except DatabaseUnavailable:
+        return False
     cols["organizations"].create_index([("id", ASCENDING)], unique=True)
     cols["organizations"].create_index([("slug", ASCENDING)], unique=True)
     cols["api_keys"].create_index([("key", ASCENDING)], unique=True)
@@ -148,6 +204,7 @@ def init_db():
     cols["users"].create_index([("email", ASCENDING)], unique=True)
     cols["users"].create_index([("verify_token", ASCENDING)])
     cols["users"].create_index([("reset_token", ASCENDING)])
+    return True
 
 
 def db_create_organization(name: str) -> dict:
@@ -864,6 +921,3 @@ def db_get_platform_summary(limit: int = 20) -> dict:
         "recent_users": recent_users,
         "recent_billing_events": recent_billing,
     }
-
-
-init_db()

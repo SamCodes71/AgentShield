@@ -80,11 +80,16 @@ def scan_html(
 
     check_rate_limit(effective_api_key)
     if api_key != "open":
-        from api.database import db_get_usage
+        try:
+            from api.database import db_get_usage
 
-        usage = db_get_usage(effective_api_key)
-        if usage and int(usage.get("monthly_limit", 0) or 0) <= int(usage.get("scans_used", 0) or 0):
-            raise quota_exceeded_error(usage.get("plan", "free"), usage.get("period", "this month"))
+            usage = db_get_usage(effective_api_key)
+            if usage and int(usage.get("monthly_limit", 0) or 0) <= int(usage.get("scans_used", 0) or 0):
+                raise quota_exceeded_error(usage.get("plan", "free"), usage.get("period", "this month"))
+        except HTTPException:
+            raise
+        except Exception:
+            usage = None
     else:
         enforce_scan_quota(api_key)
     _read_json_body_sync_guard(body.html)
@@ -142,11 +147,16 @@ def scan_url(
 
     check_rate_limit(effective_api_key)
     if api_key != "open":
-        from api.database import db_get_usage
+        try:
+            from api.database import db_get_usage
 
-        usage = db_get_usage(effective_api_key)
-        if usage and int(usage.get("monthly_limit", 0) or 0) <= int(usage.get("scans_used", 0) or 0):
-            raise quota_exceeded_error(usage.get("plan", "free"), usage.get("period", "this month"))
+            usage = db_get_usage(effective_api_key)
+            if usage and int(usage.get("monthly_limit", 0) or 0) <= int(usage.get("scans_used", 0) or 0):
+                raise quota_exceeded_error(usage.get("plan", "free"), usage.get("period", "this month"))
+        except HTTPException:
+            raise
+        except Exception:
+            usage = None
     else:
         enforce_scan_quota(api_key)
     try:

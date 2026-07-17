@@ -2,6 +2,7 @@
 
 import os
 import secrets
+import logging
 
 from fastapi import HTTPException, Request, Security, status
 from fastapi.security.api_key import APIKeyHeader
@@ -13,6 +14,7 @@ from api.key_manager import validate_api_key
 
 API_KEY_HEADER = APIKeyHeader(name="X-API-Key", auto_error=False)
 DEMO_SESSION_COOKIE = "guni_demo_id"
+logger = logging.getLogger(__name__)
 
 
 def _load_valid_keys() -> set[str]:
@@ -85,7 +87,11 @@ def _session_user(request: Request) -> dict | None:
     payload = decode_session(session)
     if not payload:
         return None
-    user = db_get_user_by_email(payload.get("email", ""))
+    try:
+        user = db_get_user_by_email(payload.get("email", ""))
+    except Exception as exc:
+        logger.warning("Session lookup skipped because database is unavailable: %s", exc)
+        return None
     if not user:
         return None
     if int(payload.get("sv", 0) or 0) != int(user.get("session_version", 0) or 0):
@@ -94,29 +100,33 @@ def _session_user(request: Request) -> dict | None:
 
 
 def _verified_session_api_key(request: Request) -> str | None:
-    user = _session_user(request)
-    if not user:
-        return None
-    email = user.get("email", "").lower()
-    owner_emails = {
-        item.strip().lower()
-        for item in os.environ.get("GUNI_OWNER_EMAILS", "").split(",")
-        if item.strip()
-    }
-    if not user.get("verified") and email not in owner_emails:
-        return None
-    api_key = user.get("api_key")
-    if api_key and db_validate_key(api_key):
+    try:
+        user = _session_user(request)
+        if not user:
+            return None
+        email = user.get("email", "").lower()
+        owner_emails = {
+            item.strip().lower()
+            for item in os.environ.get("GUNI_OWNER_EMAILS", "").split(",")
+            if item.strip()
+        }
+        if not user.get("verified") and email not in owner_emails:
+            return None
+        api_key = user.get("api_key")
+        if api_key and db_validate_key(api_key):
+            return api_key
+        plan = str(user.get("plan", "free")).lower()
+        api_key = generate_api_key(
+            email=email,
+            plan=plan,
+            scans_limit=PLAN_LIMITS.get(plan, 0),
+            org_id=user.get("org_id"),
+        )["key"]
+        db_update_user_login(email, api_key)
         return api_key
-    plan = str(user.get("plan", "free")).lower()
-    api_key = generate_api_key(
-        email=email,
-        plan=plan,
-        scans_limit=PLAN_LIMITS.get(plan, 0),
-        org_id=user.get("org_id"),
-    )["key"]
-    db_update_user_login(email, api_key)
-    return api_key
+    except Exception as exc:
+        logger.warning("Session-backed API key unavailable: %s", exc)
+        return None
 
 
 def _verify_api_key_from_request(request, api_key: str | None = None, *, allow_open_demo: bool = False) -> str:
@@ -129,8 +139,11 @@ def _verify_api_key_from_request(request, api_key: str | None = None, *, allow_o
     if api_key:
         if api_key in valid_keys:
             return api_key
-        if validate_api_key(api_key):
-            return api_key
+        try:
+            if validate_api_key(api_key):
+                return api_key
+        except Exception as exc:
+            logger.warning("Database-backed API key validation unavailable: %s", exc)
 
     if (
         allow_open_demo

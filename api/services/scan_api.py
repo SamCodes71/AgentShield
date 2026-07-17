@@ -55,7 +55,10 @@ def enforce_scan_quota(api_key: str, scans_needed: int = 1) -> None:
     from api.key_manager import get_usage
     from api.rate_limit import quota_exceeded_error
 
-    usage = get_usage(api_key)
+    try:
+        usage = get_usage(api_key)
+    except Exception:
+        return
     if not usage:
         return
 

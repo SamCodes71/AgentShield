@@ -3,9 +3,12 @@
 from __future__ import annotations
 
 import os
+import logging
 from dataclasses import dataclass
 from fnmatch import fnmatch
 from urllib.parse import urlparse
+
+logger = logging.getLogger(__name__)
 
 
 def _truthy(value: str | None) -> bool:
@@ -57,11 +60,13 @@ def load_settings() -> AppSettings:
     rate_limit_raw = os.environ.get("GUNI_RATE_LIMIT", "60").strip() or "60"
     try:
         rate_limit = int(rate_limit_raw)
-    except ValueError as exc:
-        raise RuntimeError("GUNI_RATE_LIMIT must be an integer.") from exc
+    except ValueError:
+        logger.warning("Invalid GUNI_RATE_LIMIT=%r; using default 60.", rate_limit_raw)
+        rate_limit = 60
 
     if rate_limit <= 0:
-        raise RuntimeError("GUNI_RATE_LIMIT must be greater than 0.")
+        logger.warning("Invalid GUNI_RATE_LIMIT=%r; using default 60.", rate_limit_raw)
+        rate_limit = 60
 
     admin_emails = {
         email.strip().lower()
@@ -150,5 +155,8 @@ def validate_runtime_settings() -> AppSettings:
                 break
 
     if problems:
-        raise RuntimeError("Invalid production configuration: " + " ".join(problems))
+        logger.warning(
+            "Production configuration is incomplete; startup will continue with limited features: %s",
+            " ".join(problems),
+        )
     return settings

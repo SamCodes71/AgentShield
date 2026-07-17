@@ -11,12 +11,9 @@ If env vars are not set, email sending is skipped.
 
 import os
 from html import escape
-from email.mime.multipart import MIMEMultipart
-from email.mime.text import MIMEText
 
 from api.logging_utils import get_logger
 
-SMTP_TIMEOUT_SECONDS = float(os.environ.get("GUNI_SMTP_TIMEOUT", "10"))
 logger = get_logger("email")
 
 

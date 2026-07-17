@@ -5,7 +5,7 @@ from __future__ import annotations
 import os
 from urllib.parse import urlparse
 
-from fastapi import HTTPException, status
+from fastapi import HTTPException
 
 from api.models import AnalyzeResponse, LLMAnalysis, ScanResponse, ThreatItem
 from api.netutil import fetch_public_url, validate_public_url

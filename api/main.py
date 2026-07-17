@@ -8,7 +8,7 @@ import time
 from datetime import date
 from pathlib import Path
 
-from fastapi import BackgroundTasks, Depends, FastAPI, HTTPException, Query, Request, WebSocket, status
+from fastapi import BackgroundTasks, Depends, FastAPI, HTTPException, Query, Request, WebSocket
 from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import HTMLResponse, JSONResponse, PlainTextResponse, RedirectResponse, Response
@@ -16,7 +16,7 @@ from starlette.exceptions import HTTPException as StarletteHTTPException
 from starlette.middleware.trustedhost import TrustedHostMiddleware
 from pydantic import BaseModel, field_validator
 
-from api.auth import verify_api_key, verify_api_key_or_session
+#from api.auth import verify_api_key_or_session
 from api.config import load_settings, validate_runtime_settings
 from api.database import DatabaseUnavailable
 from api.input_validation import (
@@ -34,7 +34,7 @@ from api.routers.scanning import router as scanning_router
 from api.routers.threats import router as threats_router
 from api.services.site import mount_dashboard_assets, render_dashboard_page
 from guni import __version__
-from runtime_config import AUDIT_LOG_PATH, EVENT_LOG_PATH, WAITLIST_PATH
+from runtime_config import EVENT_LOG_PATH, WAITLIST_PATH
 
 SETTINGS = validate_runtime_settings()
 

@@ -6,9 +6,18 @@ import os
 import logging
 from dataclasses import dataclass
 from fnmatch import fnmatch
+from pathlib import Path
 from urllib.parse import urlparse
 
+from dotenv import load_dotenv
+
 logger = logging.getLogger(__name__)
+
+
+# Load local developer configuration before any settings are resolved. Hosted
+# environments (Railway, Docker, etc.) inject variables into the process, and
+# ``override=False`` keeps those values authoritative over a checked-out .env.
+load_dotenv(Path(__file__).resolve().parents[1] / ".env", override=False)
 
 
 def _truthy(value: str | None) -> bool:
@@ -19,14 +28,14 @@ def is_production_environment() -> bool:
     markers = (
         os.environ.get("RAILWAY_ENVIRONMENT"),
         os.environ.get("RAILWAY_PROJECT_ID"),
+        os.environ.get("RENDER"),
+        os.environ.get("RENDER_SERVICE_ID"),
         os.environ.get("ENV"),
         os.environ.get("APP_ENV"),
         os.environ.get("GUNI_ENV"),
     )
     normalized = {(marker or "").strip().lower() for marker in markers if marker}
-    return bool(normalized & {"production", "prod"}) or any(
-        marker for marker in markers[:2]
-    )
+    return bool(normalized & {"production", "prod"}) or any(marker for marker in markers[:4])
 
 
 def _host_matches_trusted_hosts(hostname: str, trusted_hosts: tuple[str, ...]) -> bool:
@@ -92,6 +101,22 @@ def load_settings() -> AppSettings:
     # local URLs and development proxies. Enable it only in production.
     if not is_production_environment():
         trusted_hosts = ()
+    elif any(
+        (os.environ.get(marker) or "").strip()
+        for marker in ("RAILWAY_ENVIRONMENT", "RAILWAY_PROJECT_ID", "RAILWAY_SERVICE_ID")
+    ):
+        # Railway health checks and generated public domains use these hosts.
+        # Keep explicit/custom domains from GUNI_TRUSTED_HOSTS as well.
+        trusted_hosts = tuple(
+            dict.fromkeys((*trusted_hosts, "*.up.railway.app", "healthcheck.railway.app"))
+        )
+    elif any(
+        (os.environ.get(marker) or "").strip()
+        for marker in ("RENDER", "RENDER_SERVICE_ID", "RENDER_EXTERNAL_URL")
+    ):
+        # Render routes public services through a generated *.onrender.com
+        # hostname. Keep explicit/custom domains from GUNI_TRUSTED_HOSTS too.
+        trusted_hosts = tuple(dict.fromkeys((*trusted_hosts, "*.onrender.com")))
 
     return AppSettings(
         llm_api_key=(

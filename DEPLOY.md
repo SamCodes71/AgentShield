@@ -65,6 +65,13 @@ Optional overrides:
 
 The included Railway health check is `GET /health`; it starts the service with `python start_server.py`, which binds Gunicorn to Railway's injected `PORT`.
 
+## Render checklist
+
+Render's generated `*.onrender.com` hostname is automatically trusted. Set
+`GUNI_APP_BASE_URL` to the HTTPS URL shown in the Render dashboard and add any
+custom domain to `GUNI_TRUSTED_HOSTS` as well. Deploy again after changing
+environment variables.
+
 ## Verify the deploy
 
 ```bash

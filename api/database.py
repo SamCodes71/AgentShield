@@ -8,7 +8,6 @@ for local tests that should run without a real MongoDB server.
 
 from __future__ import annotations
 
-import json
 import os
 import time
 from urllib.parse import urlparse
@@ -17,7 +16,7 @@ from pymongo import ASCENDING, DESCENDING, MongoClient
 from pymongo.collection import ReturnDocument
 from pymongo.errors import DuplicateKeyError, OperationFailure
 
-from runtime_config import DB_PATH, MONGO_DB_NAME, MONGO_URI
+from runtime_config import MONGO_DB_NAME, MONGO_URI
 
 
 _CLIENT = None

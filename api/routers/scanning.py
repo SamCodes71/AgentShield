@@ -9,7 +9,7 @@ from fastapi import APIRouter, Depends, HTTPException, Query, Request, Response,
 from fastapi.responses import StreamingResponse
 from pydantic import ValidationError, field_validator
 
-from api.auth import DEMO_SESSION_COOKIE, get_demo_session_key, verify_api_key, verify_api_key_or_demo, verify_api_key_or_session, verify_api_key_or_session_or_demo
+from api.auth import DEMO_SESSION_COOKIE, get_demo_session_key, verify_api_key, verify_api_key_or_session, verify_api_key_or_session_or_demo
 from api.input_validation import (
     StrictRequestModel,
     sanitize_choice,

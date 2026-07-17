@@ -32,7 +32,7 @@ def validate_public_url(
     if hostname in blocked or hostname.endswith(".local"):
         raise ValueError(f"{subject} host is not allowed.")
 
-    resolved = resolve_public_hostname(
+    resolve_public_hostname(
         hostname,
         parsed.port or default_port,
         blocked_hosts=blocked_hosts,

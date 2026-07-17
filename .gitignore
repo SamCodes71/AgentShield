@@ -36,5 +36,8 @@ htmlcov/
 # Local app state
 .guni/
 .guni-test-runtime/
+.guni-test-runtime-debug*/
+.guni-test-runtime-debug*/guni.db
+.guni-test-runtime-debug*/events.json
 guni_waitlist.json
 pytest-cache-files-*/

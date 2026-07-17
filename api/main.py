@@ -16,7 +16,7 @@ from starlette.exceptions import HTTPException as StarletteHTTPException
 from starlette.middleware.trustedhost import TrustedHostMiddleware
 from pydantic import BaseModel, field_validator
 
-from api.auth import verify_api_key_or_session
+#from api.auth import verify_api_key_or_session
 from api.config import load_settings, validate_runtime_settings
 from api.input_validation import (
     StrictRequestModel,

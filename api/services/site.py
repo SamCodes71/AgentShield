@@ -106,7 +106,7 @@ def _site_shell_assets(name: str) -> dict[str, str]:
     page_slug = name.replace(".html", "")
     nav_html = """
 <nav class="g-nav g-shell-nav g-shell-nav-injected" id="g-shell-nav">
-  <a class="g-logo" href="/">guni<em>.dev</em></a>
+  <a class="g-logo" href="/">AgentShield</a>
   <div class="g-nav-links">
     <a href="/">Home</a>
     <a href="/demo">Demo</a>
@@ -128,7 +128,7 @@ def _site_shell_assets(name: str) -> dict[str, str]:
 <footer class="g-shell-footer" id="g-shell-footer">
   <div class="g-shell-footer-top">
     <div class="g-shell-brand">
-      <div class="g-shell-brand-mark">guni</div>
+      <div class="g-shell-brand-mark">AgentShield</div>
       <div class="g-shell-brand-copy">Security infrastructure for browser agents, action-taking copilots, and adversarial web workflows.</div>
     </div>
     <div class="g-shell-footer-actions">
@@ -164,7 +164,7 @@ def _site_shell_assets(name: str) -> dict[str, str]:
   </div>
   <div class="g-shell-footer-bottom">
     <span>Built for real AI-agent production environments.</span>
-    <span>&copy; 2026 Guni</span>
+    <span>&copy; 2026 AgentShield</span>
   </div>
 </footer>
 """.strip()

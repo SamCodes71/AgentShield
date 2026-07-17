@@ -15,7 +15,7 @@ router = APIRouter(include_in_schema=False)
 
 @router.get("/", response_class=HTMLResponse)
 def landing():
-    return render_dashboard_page("landing.html", "<h1>Guni</h1><p><a href='/demo'>Demo</a> · <a href='/docs'>API docs</a></p>")
+    return render_dashboard_page("landing.html", "<h1>AgentShield</h1><p><a href='/demo'>Demo</a> · <a href='/docs'>API docs</a></p>")
 
 
 @router.get("/signup", response_class=HTMLResponse)
@@ -44,7 +44,7 @@ def reset_page(token: str = ""):
 
 @router.get("/about", response_class=HTMLResponse)
 def about():
-    return render_dashboard_page("about.html", "<h1>About Guni</h1>")
+    return render_dashboard_page("about.html", "<h1>About AgentShield</h1>")
 
 
 @router.get("/privacy", response_class=HTMLResponse)
@@ -64,7 +64,7 @@ async def status_page():
 
 @router.get("/demo", response_class=HTMLResponse)
 def demo_page():
-    return render_dashboard_page("index.html", "<h1>Guni Demo</h1><p>Visit <a href='/docs'>/docs</a></p>")
+    return render_dashboard_page("index.html", "<h1>AgentShield Demo</h1><p>Visit <a href='/docs'>/docs</a></p>")
 
 
 @router.get("/dashboard", response_class=HTMLResponse)
@@ -84,7 +84,7 @@ def docs_page():
 
 @router.get("/enterprise", response_class=HTMLResponse)
 def enterprise():
-    return render_dashboard_page("enterprise.html", "<h1>Guni for Agentic Browsers</h1>")
+    return render_dashboard_page("enterprise.html", "<h1>AgentShield for Agentic Browsers</h1>")
 
 
 @router.get("/security", response_class=HTMLResponse)

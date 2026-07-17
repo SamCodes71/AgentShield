@@ -9,11 +9,13 @@ from fastapi import APIRouter, Depends, HTTPException, Query, Request, Response,
 from fastapi.responses import StreamingResponse
 from pydantic import ValidationError, field_validator
 
-DEMO_SESSION_COOKIE = "guni_demo_id"
-
-def get_demo_session_key(request):
-    return "open", False
-    
+from api.auth import (
+    DEMO_SESSION_COOKIE,
+    get_demo_session_key,
+    verify_api_key,
+    verify_api_key_or_session,
+    verify_api_key_or_session_or_demo,
+)
 from api.input_validation import (
     StrictRequestModel,
     sanitize_choice,
@@ -75,6 +77,7 @@ def scan_html(
     body: ScanRequest,
     request: Request,
     response: Response,
+    api_key: str = Depends(verify_api_key_or_session_or_demo),
 ):
     effective_api_key = api_key
     demo_cookie_created = False
@@ -205,6 +208,7 @@ def scan_url(
 def get_history(
     request: Request,
     limit: int = Query(20, ge=1),
+    api_key: str = Depends(verify_api_key_or_session_or_demo),
 ):
     limit = min(limit, 100)
     effective_api_key = api_key

@@ -20,13 +20,13 @@ Set these in Railway:
 | Variable | Recommended value |
 |---|---|
 | `PORT` | Railway-provided |
-| `GUNI_DATA_DIR` | `/data/guni` or Railway volume path for logs/non-DB state |
+| `GUNI_DATA_DIR` | `/data/guni` when a Railway Volume is mounted at `/data`; otherwise leave unset for ephemeral logs/state |
 | `GUNI_MONGO_URI` | MongoDB connection string |
 | `GUNI_MONGO_DB_NAME` | `guni` or your preferred database name |
 | `GUNI_RATE_LIMIT` | `60` or your preferred limit |
-| `GUNI_APP_BASE_URL` | Public base URL such as `https://guni.example.com` |
+| `GUNI_APP_BASE_URL` | Your Railway public URL, e.g. `https://your-service.up.railway.app` |
 | `GUNI_CORS_ORIGINS` | Comma-separated allowed browser origins for cross-origin API calls |
-| `GUNI_TRUSTED_HOSTS` | Comma-separated hostnames the app should serve |
+| `GUNI_TRUSTED_HOSTS` | `your-service.up.railway.app,healthcheck.railway.app` (add your custom domain too, if used) |
 | `GUNI_API_KEYS` | Comma-separated production keys if using protected mode |
 | `GUNI_SESSION_SECRET` | Long random secret |
 | `GUNI_LLM_API_KEY` | Optional default API key for hosted LLM reasoning |
@@ -55,12 +55,15 @@ Optional overrides:
 ## Railway checklist
 
 1. Push the repo to GitHub.
-2. Create a Railway project from the repo.
-3. Keep the included `Dockerfile` and `railway.toml`.
-4. Provision MongoDB and set `GUNI_MONGO_URI`.
-5. Mount persistent storage if you want durable logs or waitlist files.
-6. Set the environment variables above.
-7. Verify `/health`, `/dashboard`, and `/enterprise` after deploy.
+2. Create a Railway project from the repo and deploy the service. Railway will use the included `Dockerfile` and `railway.toml` automatically.
+3. Generate the public Railway domain, then set `GUNI_APP_BASE_URL` and `GUNI_TRUSTED_HOSTS` using that hostname. `healthcheck.railway.app` must stay in `GUNI_TRUSTED_HOSTS` so Railway can reach `/health` during deploys.
+4. Provision a MongoDB service or use MongoDB Atlas, then set `GUNI_MONGO_URI` to its connection string. This is required for accounts, API keys, scans, billing, and other persistent application features.
+5. Set a long, random `GUNI_SESSION_SECRET`; keep `GUNI_ALLOW_OPEN_MODE=false` and `GUNI_ALLOW_PUBLIC_DEMO=false` in production.
+6. Optionally attach a Railway Volume at `/data` and set `GUNI_DATA_DIR=/data/guni` for durable event logs and waitlist data.
+7. Add the LLM, email, and Razorpay variables only for the integrations you intend to enable.
+8. Verify `/health`, `/dashboard`, and `/enterprise` after deploy.
+
+The included Railway health check is `GET /health`; it starts the service with `python start_server.py`, which binds Gunicorn to Railway's injected `PORT`.
 
 ## Verify the deploy
 

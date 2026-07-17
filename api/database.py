@@ -8,11 +8,7 @@ for local tests that should run without a real MongoDB server.
 
 from __future__ import annotations
 
-<<<<<<< HEAD
-import json
 import logging
-=======
->>>>>>> 4b157e69e7b8982c575c72691595e35d9657c008
 import os
 import time
 from urllib.parse import urlparse

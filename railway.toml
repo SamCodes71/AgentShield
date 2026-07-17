@@ -3,7 +3,8 @@ builder = "dockerfile"
 dockerfilePath = "Dockerfile"
 
 [deploy]
+startCommand = "python start_server.py"
 healthcheckPath = "/health"
-healthcheckTimeout = 30
+healthcheckTimeout = 90
 restartPolicyType = "on_failure"
 restartPolicyMaxRetries = 3

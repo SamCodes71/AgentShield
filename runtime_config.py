@@ -10,6 +10,14 @@ from __future__ import annotations
 import os
 from pathlib import Path
 
+from dotenv import load_dotenv
+
+
+# Load developer secrets from a local `.env` file when present. Railway injects
+# its variables into the process environment, and `override=False` ensures
+# those deployment values always take precedence.
+load_dotenv(Path(__file__).resolve().parent / ".env", override=False)
+
 
 def _on_railway() -> bool:
     markers = (

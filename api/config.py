@@ -88,6 +88,10 @@ def load_settings() -> AppSettings:
         for host in os.environ.get("GUNI_TRUSTED_HOSTS", "").split(",")
         if host.strip()
     )
+    # Host filtering protects the public deployment, but it blocks common
+    # local URLs and development proxies. Enable it only in production.
+    if not is_production_environment():
+        trusted_hosts = ()
 
     return AppSettings(
         llm_api_key=(

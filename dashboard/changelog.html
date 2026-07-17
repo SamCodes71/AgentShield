@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-VMF9CFE4DP"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-VMF9CFE4DP');
+</script>
+<meta charset="UTF-8"/><meta name="google-site-verification" content="1E_FlR4xf-AuRM7RShzK_9pdieEM9Y5mAwra2yOE8_8" /><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta name="description" content="Product updates, new threat vectors, and API changes."/>
+<meta property="og:type" content="website"/>
+<meta property="og:site_name" content="AgentShield"/>
+<meta property="og:title" content="AgentShield Changelog"/>
+<meta property="og:description" content="Product updates, new threat vectors, and API changes."/>
+<meta property="og:url" content="https://guni.up.railway.app/changelog"/>
+<meta property="og:image" content="https://guni.up.railway.app/static/og-image.svg"/>
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:title" content="AgentShield Changelog"/>
+<meta name="twitter:description" content="Product updates, new threat vectors, and API changes."/>
+<meta name="twitter:image" content="https://guni.up.railway.app/static/og-image.svg"/>
+<title>AgentShield Changelog</title>
+<link rel="icon" type="image/svg+xml" href="/static/favicon.svg"/>
+<link rel="stylesheet" href="/static/guni.css"/>
+<style>
+.release{margin-bottom:3rem;padding-bottom:3rem;border-bottom:1px solid var(--border)}
+.release:last-child{border-bottom:none}
+.release-hdr{display:flex;align-items:baseline;gap:1rem;margin-bottom:0.5rem;flex-wrap:wrap}
+.version{font-family:var(--display);font-size:1.4rem;font-weight:700;color:var(--amber)}
+.rel-date{font-size:12px;color:var(--muted)}
+.changes{display:flex;flex-direction:column;gap:5px;margin-top:1rem}
+.change{display:flex;gap:10px;font-size:13px;color:var(--muted2);line-height:1.5}
+.ctag{font-size:10px;padding:2px 7px;letter-spacing:0.06em;flex-shrink:0;margin-top:2px;border:1px solid}
+.cn{color:var(--green);border-color:rgba(0,217,126,0.2);background:rgba(0,217,126,0.06)}
+.ci{color:var(--amber);border-color:var(--border2);background:var(--amber3)}
+.cf{color:var(--blue);border-color:rgba(74,158,255,0.2);background:var(--blue2)}
+</style>
+</head>
+<body class="g-page">
+<nav class="g-nav">
+  <a class="g-logo" href="/">AgentShield</a>
+  <div class="g-nav-links"><a href="/">Home</a><a href="/demo">Demo</a><a href="/threats">Threat feed</a><a href="/about">About</a><a href="/docs">Docs</a></div>
+  <a class="g-btn g-btn-outline g-btn-sm" href="/signin" style="margin-right:6px">Sign in</a><a class="g-btn g-btn-primary g-btn-sm" href="/signup">Sign up</a>
+</nav>
+
+<div class="g-wrap">
+<section class="g-section">
+  <div class="g-eyebrow">Changelog</div>
+  <h1 class="g-title" style="margin-bottom:3rem">What's new<br><span class="g-accent">in AgentShield.</span></h1>
+
+  <div class="release">
+    <div class="release-hdr"><span class="version">v2.2.0</span><span class="rel-date">March 2026</span><span class="g-tag g-tag-green">LATEST</span></div>
+    <p style="font-size:13px;color:var(--muted2)">Threat intelligence, trust surface, and hosted product improvements</p>
+    <div class="changes">
+      <div class="change"><span class="ctag cn">New</span>Public threat intelligence feed at /threats with live aggregate attack stats</div>
+      <div class="change"><span class="ctag cn">New</span>Trust-center pages for status, privacy, and product terms</div>
+      <div class="change"><span class="ctag cn">New</span>Owner operations console for signups, revenue, waitlist, and issue visibility</div>
+      <div class="change"><span class="ctag cn">New</span>Searchable docs hub and richer integration guides</div>
+      <div class="change"><span class="ctag ci">Improved</span>Unified design system across all public pages</div>
+      <div class="change"><span class="ctag ci">Improved</span>Customer onboarding flow inside the portal</div>
+    </div>
+  </div>
+
+  <div class="release">
+    <div class="release-hdr"><span class="version">v2.1.0</span><span class="rel-date">March 2026</span><span class="g-tag g-tag-amber">MINOR</span></div>
+    <p style="font-size:13px;color:var(--muted2)">Customer portal, analytics, Slack alerts, persistent hosted state</p>
+    <div class="changes">
+      <div class="change"><span class="ctag cn">New</span>Customer portal at /portal for usage, history, custom rules, alerts, and billing</div>
+      <div class="change"><span class="ctag cn">New</span>Persistent hosted storage for customer accounts, API keys, and scan history</div>
+      <div class="change"><span class="ctag cn">New</span>Slack and webhook alerts on BLOCK and CONFIRM decisions</div>
+      <div class="change"><span class="ctag cn">New</span>Custom threat rules per API key</div>
+      <div class="change"><span class="ctag cn">New</span>Analytics endpoint for counts, block rates, and daily trends</div>
+      <div class="change"><span class="ctag ci">Improved</span>Email confirmation on waitlist and API-key delivery on payment</div>
+    </div>
+  </div>
+
+  <div class="release">
+    <div class="release-hdr"><span class="version">v2.0.0</span><span class="rel-date">March 2026</span><span class="g-tag g-tag-amber">MAJOR</span></div>
+    <p style="font-size:13px;color:var(--muted2)">8 threat vectors, LLM upgrade, real-time scanning</p>
+    <div class="changes">
+      <div class="change"><span class="ctag cn">New</span>Clickjacking, CSRF/token theft, and open-redirect detectors</div>
+      <div class="change"><span class="ctag cn">New</span>WebSocket real-time scanning at /ws/scan</div>
+      <div class="change"><span class="ctag ci">Improved</span>LLM analyzer with 8-vector prompting, confidence scoring, and action guidance</div>
+      <div class="change"><span class="ctag ci">Improved</span>Landing page with pricing, mobile responsiveness, and stronger proof flows</div>
+      <div class="change"><span class="ctag ci">Improved</span>Risk engine with clearer scoring and less inflation</div>
+    </div>
+  </div>
+
+  <div class="release">
+    <div class="release-hdr"><span class="version">v1.0.0</span><span class="rel-date">March 2026</span><span class="g-tag g-tag-blue">INITIAL</span></div>
+    <p style="font-size:13px;color:var(--muted2)">First release - SDK, REST API, dashboard</p>
+    <div class="changes">
+      <div class="change"><span class="ctag cn">New</span>5-vector heuristic detection engine</div>
+      <div class="change"><span class="ctag cn">New</span>LLM reasoning layer using Claude Sonnet</div>
+      <div class="change"><span class="ctag cn">New</span>FastAPI REST API with auth, rate limiting, and audit log</div>
+      <div class="change"><span class="ctag cn">New</span>pip-installable Python SDK with <code>from guni import scan</code></div>
+      <div class="change"><span class="ctag cn">New</span>Railway deployment with Dockerfile</div>
+    </div>
+  </div>
+</section>
+</div>
+
+<footer class="g-footer">
+  <div class="g-footer-logo">AgentShield</div>
+  <div class="g-footer-links"><a href="/">Home</a><a href="/demo">Demo</a><a href="/threats">Threat feed</a><a href="/about">About</a></div>
+  <div class="g-footer-copy">&copy; 2026 AgentShield</div>
+</footer>
+</body>
+</html>

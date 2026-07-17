@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-VMF9CFE4DP"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-VMF9CFE4DP');
+</script>
+<meta charset="UTF-8"/>
+<meta name="google-site-verification" content="1E_FlR4xf-AuRM7RShzK_9pdieEM9Y5mAwra2yOE8_8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta name="description" content="Step-by-step integration guides for every major browser automation framework."/>
+<meta property="og:type" content="website"/>
+<meta property="og:site_name" content="AgentShield"/>
+<meta property="og:title" content="Integrate AgentShield — Playwright, browser-use, LangChain"/>
+<meta property="og:description" content="Step-by-step integration guides for every major browser automation framework."/>
+<meta property="og:url" content="https://guni.up.railway.app/integrate"/>
+<meta property="og:image" content="https://guni.up.railway.app/static/og-image.svg"/>
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:title" content="Integrate AgentShield — Playwright, browser-use, LangChain"/>
+<meta name="twitter:description" content="Step-by-step integration guides for every major browser automation framework."/>
+<meta name="twitter:image" content="https://guni.up.railway.app/static/og-image.svg"/>
+<title>Integrate AgentShield — Playwright, browser-use, LangChain</title>
+<link rel="icon" type="image/svg+xml" href="/static/favicon.svg"/>
+<link rel="stylesheet" href="/static/guni.css"/>
+<style>
+.int-tabs{display:flex;gap:0;border-bottom:1px solid var(--border2);margin-bottom:2rem;overflow-x:auto;flex-wrap:nowrap}
+.int-tab{font-family:var(--mono);font-size:11px;color:var(--muted2);padding:10px 18px;cursor:pointer;border-bottom:2px solid transparent;letter-spacing:0.06em;white-space:nowrap;transition:all 0.15s;background:none;border-left:none;border-right:none;border-top:none;text-transform:uppercase}
+.int-tab:hover{color:var(--amber)}
+.int-tab.active{color:var(--amber);border-bottom-color:var(--amber)}
+.int-panel{display:none}.int-panel.show{display:block}
+.step{display:grid;grid-template-columns:32px 1fr;gap:14px;margin-bottom:1.5rem;align-items:start}
+.step-num{width:30px;height:30px;border-radius:50%;background:var(--amber3);border:1px solid var(--border2);display:flex;align-items:center;justify-content:center;font-size:12px;color:var(--amber);flex-shrink:0;font-family:var(--display);font-weight:700;margin-top:2px}
+.step-title{font-size:14px;font-weight:600;font-family:var(--display);margin-bottom:5px;color:var(--text)}
+.step-desc{font-size:13px;color:var(--muted2);line-height:1.7;margin-bottom:8px}
+.decision-table{width:100%;border-collapse:collapse;font-size:12px;margin:1rem 0}
+.decision-table th{text-align:left;padding:8px 12px;font-size:10px;color:var(--muted);letter-spacing:0.08em;text-transform:uppercase;border-bottom:1px solid var(--border2)}
+.decision-table td{padding:10px 12px;border-bottom:1px solid var(--border);color:var(--muted2)}
+.decision-table tr:last-child td{border-bottom:none}
+.tip-box{background:var(--amber3);border:1px solid var(--border2);border-left:3px solid var(--amber);padding:1rem 1.25rem;margin:1rem 0}
+.tip-box p{font-size:12px;color:var(--muted3);line-height:1.7}
+.tip-box strong{color:var(--amber);font-weight:500}
+</style>
+</head>
+<body class="g-page">
+<nav class="g-nav">
+  <a class="g-logo" href="/">AgentShield</a>
+  <div class="g-nav-links">
+    <a href="/">Home</a><a href="/demo">Demo</a><a href="/docs">Docs</a><a href="/portal">Portal</a><a href="/about">About</a>
+  </div>
+  <a class="g-btn g-btn-outline g-btn-sm" href="/signin" style="margin-right:6px">Sign in</a><a class="g-btn g-btn-primary g-btn-sm" href="/signup">Sign up</a>
+</nav>
+<div class="g-wrap">
+<section class="g-section">
+  <div class="g-eyebrow">Integration guide</div>
+  <h1 class="g-title-md" style="margin-bottom:0.75rem">Add AgentShield to your<br><span class="g-accent">agent in 3 lines.</span></h1>
+  <p class="g-subtitle" style="margin-bottom:2.5rem">Works with Playwright, browser-use, LangChain, or any framework that fetches HTML. Choose your integration method below.</p>
+  <div class="g-card" style="margin-bottom:2.5rem">
+    <div class="g-card-header"><div class="g-card-dots"><div class="g-dot g-dot-r"></div><div class="g-dot g-dot-y"></div><div class="g-dot g-dot-g"></div></div><span class="g-card-title">how AgentShield works in your agent</span></div>
+    <div class="g-card-body">
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1px;background:var(--border);border:1px solid var(--border);margin-bottom:1.5rem">
+        <div style="background:var(--bg3);padding:1.25rem"><div style="font-size:11px;color:var(--amber);margin-bottom:6px">YOUR AGENT</div><div style="font-size:12px;color:var(--muted2)">Navigates to a URL and reads the page HTML.</div></div>
+        <div style="background:var(--bg3);padding:1.25rem;border-left:1px solid var(--border)"><div style="font-size:11px;color:var(--amber);margin-bottom:6px">GUNI SCANS</div><div style="font-size:12px;color:var(--muted2)">8-vector analysis in about 0.001s. Returns ALLOW, CONFIRM, or BLOCK.</div></div>
+        <div style="background:var(--bg3);padding:1.25rem;border-left:1px solid var(--border)"><div style="font-size:11px;color:var(--amber);margin-bottom:6px">AGENT ACTS</div><div style="font-size:12px;color:var(--muted2)">If ALLOW, proceed. If BLOCK, stop. If CONFIRM, flag and log.</div></div>
+      </div>
+      <table class="decision-table">
+        <thead><tr><th>Risk score</th><th>Decision</th><th>What to do in your agent</th></tr></thead>
+        <tbody>
+          <tr><td><span class="g-tag g-tag-red">&ge; 70</span></td><td><span class="g-decision BLOCK">BLOCK</span></td><td>Stop. Do not execute. Go back or abort the task.</td></tr>
+          <tr><td><span class="g-tag g-tag-amber">40-69</span></td><td><span class="g-decision CONFIRM">CONFIRM</span></td><td>Log the warning. Proceed carefully. Notify the user.</td></tr>
+          <tr><td><span class="g-tag g-tag-green">&lt; 40</span></td><td><span class="g-decision ALLOW">ALLOW</span></td><td>Safe to proceed with the planned action.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="int-tabs">
+    <button class="int-tab active" onclick="switchTab(event,'playwright')">Playwright</button>
+    <button class="int-tab" onclick="switchTab(event,'browseruse')">browser-use</button>
+    <button class="int-tab" onclick="switchTab(event,'langchain')">LangChain</button>
+    <button class="int-tab" onclick="switchTab(event,'rest')">REST API</button>
+    <button class="int-tab" onclick="switchTab(event,'websocket')">WebSocket</button>
+  </div>
+  <div class="int-panel show" id="tab-playwright">
+    <div class="step"><div class="step-num">1</div><div><div class="step-title">Install</div><div class="g-code-block"><div class="g-code-header"><span class="g-code-lang">bash</span><button class="g-code-copy" onclick="cp(this,'pip install -e git+https://github.com/arihantprasad07/guni.git#egg=guni')">Copy</button></div><pre class="g-pre">pip install -e git+https://github.com/arihantprasad07/guni.git#egg=guni</pre></div></div></div>
+    <div class="step"><div class="step-num">2</div><div><div class="step-title">Add the safe_goto wrapper</div><div class="step-desc">One function wraps every navigation in your agent.</div><div class="g-code-block"><div class="g-code-header"><span class="g-code-lang">python</span><button class="g-code-copy" onclick="cp(this,document.getElementById('code-playwright').textContent)">Copy</button></div><pre class="g-pre" id="code-playwright"><span class="sk">from</span> <span class="sa">guni</span> <span class="sk">import</span> GuniScanner
+<span class="sk">from</span> playwright.sync_api <span class="sk">import</span> sync_playwright
+
+scanner = GuniScanner(goal=<span class="ss">"Book a train ticket"</span>)
+
+<span class="sk">def</span> <span class="sf">safe_goto</span>(page, url: str) -> bool:
+    page.goto(url)
+    result = scanner.scan(html=page.content(), url=url)
+    <span class="sk">if</span> result[<span class="ss">"decision"</span>] == <span class="ss">"BLOCK"</span>:
+        print(<span class="ss">f"[GUNI] BLOCKED: {url} - Risk {result['risk']}/100"</span>)
+        page.go_back()
+        <span class="sk">return False</span>
+    <span class="sk">if</span> result[<span class="ss">"decision"</span>] == <span class="ss">"CONFIRM"</span>:
+        print(<span class="ss">f"[GUNI] WARNING: {url} - Risk {result['risk']}/100"</span>)
+    <span class="sk">return True</span></pre></div></div></div>
+    <div class="step"><div class="step-num">3</div><div><div class="step-title">Replace page.goto() with safe_goto()</div><div class="g-code-block"><div class="g-code-header"><span class="g-code-lang">python</span></div><pre class="g-pre"><span class="sk">if</span> safe_goto(page, <span class="ss">"https://target.com"</span>):
+    page.click(<span class="ss">"button#submit"</span>)</pre></div><div class="tip-box"><p><strong>That is it.</strong> Every page your agent visits is now scanned before an action is taken.</p></div></div></div>
+  </div>
+  <div class="int-panel" id="tab-browseruse">
+    <div class="step"><div class="step-num">1</div><div><div class="step-title">Install</div><div class="g-code-block"><div class="g-code-header"><span class="g-code-lang">bash</span></div><pre class="g-pre">pip install guni browser-use langchain-anthropic</pre></div></div></div>
+    <div class="step"><div class="step-num">2</div><div><div class="step-title">Wrap your agent with AgentShield protection</div><div class="g-code-block"><div class="g-code-header"><span class="g-code-lang">python</span><button class="g-code-copy" onclick="cp(this,document.getElementById('code-bu').textContent)">Copy</button></div><pre class="g-pre" id="code-bu"><span class="sk">from</span> <span class="sa">guni</span> <span class="sk">import</span> GuniScanner
+<span class="sk">from</span> browser_use <span class="sk">import</span> Agent
+<span class="sk">from</span> langchain_anthropic <span class="sk">import</span> ChatAnthropic</pre></div></div></div>
+  </div>
+  <div class="int-panel" id="tab-langchain">
+    <div class="step"><div class="step-num">1</div><div><div class="step-title">Use SecureBrowserTool as a drop-in replacement</div><div class="g-code-block"><div class="g-code-header"><span class="g-code-lang">python</span><button class="g-code-copy" onclick="cp(this,document.getElementById('code-lc').textContent)">Copy</button></div><pre class="g-pre" id="code-lc"><span class="sk">from</span> examples.langchain_integration <span class="sk">import</span> SecureBrowserTool
+<span class="sk">from</span> langchain.agents <span class="sk">import</span> initialize_agent, AgentType</pre></div></div></div>
+  </div>
+  <div class="int-panel" id="tab-rest">
+    <div class="step"><div class="step-num">1</div><div><div class="step-title">Use the hosted API after signup</div><div class="step-desc">Hosted access is issued after signup, evaluation approval, or a paid plan.</div><div class="g-code-block"><div class="g-code-header"><span class="g-code-lang">python</span><button class="g-code-copy" onclick="cp(this,document.getElementById('code-rest').textContent)">Copy</button></div><pre class="g-pre" id="code-rest"><span class="sk">import</span> requests
+
+<span class="sk">def</span> <span class="sf">scan_page</span>(html: str, goal: str, api_key: str) -> dict:
+    r = requests.post(
+        <span class="ss">"https://your-guni-domain/scan"</span>,
+        json={<span class="ss">"html"</span>: html, <span class="ss">"goal"</span>: goal},
+        headers={<span class="ss">"X-API-Key"</span>: api_key},
+        timeout=<span class="sn">10</span>,
+    )
+    r.raise_for_status()
+    <span class="sk">return</span> r.json()</pre></div></div></div>
+  </div>
+  <div class="int-panel" id="tab-websocket">
+    <div class="step"><div class="step-num">1</div><div><div class="step-title">Real-time scanning as your agent browses</div><div class="step-desc">Best for high-frequency agents. Keep one connection open and stream pages as they load.</div><div class="g-code-block"><div class="g-code-header"><span class="g-code-lang">python</span><button class="g-code-copy" onclick="cp(this,document.getElementById('code-ws').textContent)">Copy</button></div><pre class="g-pre" id="code-ws"><span class="sk">async with</span> websockets.connect(uri, extra_headers={
+    <span class="ss">"X-API-Key"</span>: <span class="ss">"guni_live_..."</span>,
+}) <span class="sk">as</span> ws:
+    ...</pre></div></div></div>
+  </div>
+  <div style="margin-top:3rem;background:var(--bg2);border:1px solid var(--border2);padding:1.5rem">
+    <div style="font-size:11px;color:var(--amber);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.75rem">Try it now</div>
+    <p style="font-size:13px;color:var(--muted2);margin-bottom:1rem;line-height:1.7">Run the full agent demo - 6 attack scenarios, real threat detection, live terminal output.</p>
+    <div class="g-code-block"><div class="g-code-header"><span class="g-code-lang">bash</span></div><pre class="g-pre">python examples/agent_demo.py
+python examples/agent_demo.py --browser
+python examples/agent_demo.py --template</pre></div>
+  </div>
+  <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:2rem">
+    <a class="g-btn g-btn-primary g-btn-lg" href="/signup">Request hosted access</a>
+    <a class="g-btn g-btn-outline g-btn-lg" href="/api-docs">API reference</a>
+    <a class="g-btn g-btn-outline g-btn-lg" href="https://github.com/arihantprasad07/guni" target="_blank">GitHub</a>
+  </div>
+</section>
+</div>
+<footer class="g-footer">
+  <div class="g-footer-logo">AgentShield</div>
+  <div class="g-footer-links"><a href="/">Home</a><a href="/demo">Demo</a><a href="/docs">Docs</a><a href="/about">About</a></div>
+  <div class="g-footer-copy">&copy; 2026 AgentShield</div>
+</footer>
+<script>
+function switchTab(event, name){
+  document.querySelectorAll('.int-tab').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.int-panel').forEach(p=>p.classList.remove('show'));
+  event.currentTarget.classList.add('active');
+  document.getElementById('tab-'+name).classList.add('show');
+}
+function cp(btn,text){
+  navigator.clipboard.writeText(text.trim()).then(()=>{
+    btn.textContent='Copied!';
+    setTimeout(()=>btn.textContent='Copy',1500);
+  });
+}
+</script>
+</body>
+</html>

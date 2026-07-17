@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-VMF9CFE4DP"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-VMF9CFE4DP');
+</script>
+<meta charset="UTF-8"/>
+<meta name="google-site-verification" content="1E_FlR4xf-AuRM7RShzK_9pdieEM9Y5mAwra2yOE8_8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta name="description" content="Try the AgentShield live demo to scan prompt injection, phishing, clickjacking, and goal hijacking threats in real time."/>
+<meta property="og:type" content="website"/>
+<meta property="og:site_name" content="AgentShield"/>
+<meta property="og:title" content="AgentShield Demo — Live Threat Scan"/>
+<meta property="og:description" content="Try the AgentShield live demo to scan prompt injection, phishing, clickjacking, and goal hijacking threats in real time."/>
+<meta property="og:url" content="https://guni.up.railway.app/demo"/>
+<meta property="og:image" content="https://guni.up.railway.app/static/og-image.svg"/>
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:title" content="AgentShield Demo — Live Threat Scan"/>
+<meta name="twitter:description" content="Try the AgentShield live demo to scan prompt injection, phishing, clickjacking, and goal hijacking threats in real time."/>
+<meta name="twitter:image" content="https://guni.up.railway.app/static/og-image.svg"/>
+<title>AgentShield Demo — Live Threat Scan</title>
+<link rel="icon" type="image/svg+xml" href="/static/favicon.svg"/>
+<link rel="stylesheet" href="/static/guni.css"/>
+<style>
+.dash-page{
+  min-height:100vh;
+  background:
+    radial-gradient(circle at top left, rgba(245,166,35,0.18), transparent 28%),
+    radial-gradient(circle at top right, rgba(74,158,255,0.14), transparent 24%),
+    linear-gradient(180deg, #060608 0%, #090a0d 40%, #060608 100%);
+}
+.dash-shell{padding:calc(56px + 1.5rem) 0 3rem}
+.dash-hero{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(280px,0.9fr);gap:1rem;align-items:stretch}
+.dash-kicker{
+  display:inline-flex;align-items:center;gap:8px;width:fit-content;
+  padding:6px 12px;border:1px solid var(--border2);background:rgba(245,166,35,0.08);
+  font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:var(--amber);margin-bottom:1rem;
+}
+.dash-kicker::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--green);box-shadow:0 0 12px rgba(0,217,126,0.75)}
+.dash-sub{max-width:60ch;margin-top:1rem}
+.dash-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:1.5rem}
+.dash-summary{
+  display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;height:100%;
+}
+.dash-summary-card{
+  background:rgba(7,7,10,0.78);border:1px solid var(--border2);padding:1rem;backdrop-filter:blur(10px);
+}
+.dash-summary-label{font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted2);margin-bottom:0.45rem}
+.dash-summary-value{font-family:var(--display);font-size:clamp(1.8rem,3vw,2.4rem);line-height:0.95}
+.dash-summary-text{font-size:12px;color:var(--muted3);margin-top:0.45rem;line-height:1.7}
+.dash-grid{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(300px,0.85fr);gap:1rem;margin-top:1rem}
+.dash-stack{display:grid;gap:1rem}
+.studio-grid{display:grid;grid-template-columns:1.1fr 0.9fr;gap:14px}
+.preset-row{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:1rem}
+.preset-btn{
+  font-family:var(--mono);font-size:11px;color:var(--muted3);background:var(--bg3);
+  border:1px solid var(--border2);padding:6px 10px;cursor:pointer;transition:all 0.15s;letter-spacing:0.04em;
+}
+.preset-btn:hover,.preset-btn.active{border-color:var(--amber);color:var(--amber);transform:translateY(-1px)}
+.field-stack{display:grid;gap:12px}
+.scan-row{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:1rem}
+.scan-note{font-size:11px;color:var(--muted2)}
+.studio-note{
+  margin-top:1rem;padding:0.85rem 1rem;background:rgba(74,158,255,0.08);
+  border:1px solid rgba(74,158,255,0.18);font-size:12px;color:var(--muted3);line-height:1.7;
+}
+.trust-list,.signal-list,.evidence-list{display:grid;gap:10px}
+.trust-item,.signal-item,.evidence-item{
+  padding:0.9rem 1rem;background:rgba(255,255,255,0.02);border:1px solid var(--border);min-width:0;
+}
+.trust-item strong,.signal-item strong,.evidence-item strong{display:block;font-size:12px;color:var(--text);margin-bottom:0.35rem}
+.trust-item span,.signal-item span,.evidence-item span{font-size:12px;color:var(--muted3);line-height:1.7}
+.analyze-shell,.result-shell{display:none}
+.analyze-shell.show,.result-shell.show{display:block}
+.decision-row{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:1rem}
+.risk-copy{font-size:13px;color:var(--muted3)}
+.risk-copy strong{color:var(--text)}
+.latency{margin-left:auto;font-size:11px;color:var(--muted2)}
+.breakdown-list{display:grid;gap:8px}
+.breakdown-row{display:grid;grid-template-columns:120px 1fr 36px;gap:10px;align-items:center}
+.breakdown-row span{font-size:11px;color:var(--muted2)}
+.evidence-item{border-left:2px solid var(--red)}
+.evidence-item.safe{border-left-color:var(--green)}
+.llm-box{
+  margin-top:1rem;padding:1rem;border:1px solid rgba(0,217,126,0.2);background:rgba(0,217,126,0.06);
+}
+.llm-box strong{display:block;font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:var(--green);margin-bottom:0.4rem}
+.hist-table td.goal-col,.hist-table td.url-col{max-width:160px}
+.status-pill{
+  display:inline-flex;align-items:center;gap:8px;width:fit-content;padding:6px 10px;
+  border:1px solid var(--border2);background:rgba(245,166,35,0.05);font-size:10px;letter-spacing:0.08em;text-transform:uppercase;color:var(--muted3);
+}
+.status-pill::before{content:'';width:7px;height:7px;border-radius:50%;background:var(--green)}
+.empty-state{font-size:12px;color:var(--muted2);padding:1.2rem;border:1px dashed var(--border2);text-align:center}
+.code-wrap{margin-top:1rem}
+.demo-cta{position:fixed;left:0;right:0;bottom:0;z-index:60;transform:translateY(110%);transition:transform .25s ease;padding:0 var(--pad) 1rem}
+.demo-cta.show{transform:translateY(0)}
+.demo-cta-inner{max-width:var(--max);margin:0 auto;padding:1rem 1.1rem;border:1px solid var(--border2);background:rgba(7,7,10,.96);display:flex;justify-content:space-between;align-items:center;gap:1rem;flex-wrap:wrap;box-shadow:0 -18px 40px rgba(0,0,0,.2)}
+.demo-cta-copy{font-size:12px;color:var(--muted3)}
+.demo-cta-copy strong{color:var(--text)}
+.demo-cta-close{margin-left:auto;background:none;border:none;color:var(--muted2);font-size:18px;cursor:pointer;line-height:1}
+.demo-cta-close:hover{color:var(--amber)}
+@media (max-width: 980px){
+  .dash-hero,.dash-grid,.studio-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body class="g-page dash-page">
+<nav class="g-nav">
+  <a class="g-logo" href="/">AgentShield</a>
+  <div class="g-nav-links">
+    <a href="/">Home</a>
+    <a href="/portal">Portal</a>
+    <a href="/threats">Threat feed</a>
+    <a href="/integrate">Integrate</a>
+    <a href="/docs">Docs</a>
+  </div>
+  <div class="g-nav-right">
+    <div class="g-live"><div class="g-live-dot"></div><span class="g-hide-mobile">API online</span></div>
+    <a class="g-btn g-btn-outline g-btn-sm" href="https://github.com/arihantprasad07/guni" target="_blank" rel="noreferrer">GitHub</a>
+  </div>
+</nav>
+
+<main class="dash-shell">
+  <div class="g-wrap">
+    <section class="dash-hero">
+      <div class="g-card" style="background:rgba(7,7,10,0.78)">
+        <div class="g-card-body" style="padding:1.5rem">
+          <div class="dash-kicker">Live scan studio</div>
+          <h1 class="g-title" style="font-size:clamp(2.6rem,6vw,4.8rem)">Ship agent security<br/><span class="g-accent">with proof.</span></h1>
+          <p class="g-subtitle dash-sub">Run a real scan against your deployed API, inspect why AgentShield blocked or confirmed the page, and keep a visible audit trail while you iterate.</p>
+          <div class="dash-actions">
+            <a class="g-btn g-btn-primary" href="#scan-studio">Run a scan</a>
+            <a class="g-btn g-btn-outline" href="/api-docs">Open API reference</a>
+          </div>
+        </div>
+      </div>
+      <div class="dash-summary">
+        <div class="dash-summary-card">
+          <div class="dash-summary-label">Decisions</div>
+          <div class="dash-summary-value" id="metric-total">0</div>
+          <div class="dash-summary-text">Recent scans pulled from your audit history.</div>
+        </div>
+        <div class="dash-summary-card">
+          <div class="dash-summary-label">Block rate</div>
+          <div class="dash-summary-value g-accent" id="metric-rate">0%</div>
+          <div class="dash-summary-text">How aggressively the current traffic is being stopped.</div>
+        </div>
+        <div class="dash-summary-card">
+          <div class="dash-summary-label">Highest risk</div>
+          <div class="dash-summary-value" id="metric-risk">0</div>
+          <div class="dash-summary-text">Worst score seen in the latest audit window.</div>
+        </div>
+        <div class="dash-summary-card">
+          <div class="dash-summary-label">Last decision</div>
+          <div class="dash-summary-value" id="metric-last">NONE</div>
+          <div class="dash-summary-text">Most recent response from the deployed scanner.</div>
+        </div>
+      </div>
+    </section>
+
+    <div class="g-metrics" style="margin-top:1rem">
+      <div class="g-metric"><div class="g-metric-val r" id="m-blocked">0</div><div class="g-metric-label">Threats blocked</div></div>
+      <div class="g-metric"><div class="g-metric-val a" id="m-confirm">0</div><div class="g-metric-label">Requires review</div></div>
+      <div class="g-metric"><div class="g-metric-val g" id="m-allow">0</div><div class="g-metric-label">Allowed</div></div>
+      <div class="g-metric"><div class="g-metric-val b" id="m-scans">0</div><div class="g-metric-label">History loaded</div></div>
+    </div>
+
+    <section class="dash-grid">
+      <div class="dash-stack">
+        <article class="g-card" id="scan-studio">
+          <div class="g-card-header">
+            <div class="g-card-dots"><div class="g-dot g-dot-r"></div><div class="g-dot g-dot-y"></div><div class="g-dot g-dot-g"></div></div>
+            <span class="g-card-title">Scan studio</span>
+          </div>
+          <div class="g-card-body">
+            <div class="studio-grid">
+              <div class="field-stack">
+                <div>
+                  <label class="g-field-label" for="url-in">Webpage URL</label>
+                  <input class="g-input" id="url-in" type="url" value="https://example.com" placeholder="https://example.com/page" autocomplete="url"/>
+                  <p class="scan-note" style="margin-top:0.55rem">AgentShield fetches the page server-side and sends its returned HTML to Gemini for semantic threat analysis.</p>
+                </div>
+              </div>
+              <div class="field-stack">
+                <div>
+                  <label class="g-field-label" for="goal-in">Agent goal</label>
+                  <input class="g-input" id="goal-in" type="text" value="Login to website"/>
+                </div>
+                <div>
+                  <label class="g-field-label" for="apikey-in">API key</label>
+                  <input class="g-input" id="apikey-in" type="text" placeholder="Optional for protected environments"/>
+                </div>
+                <div class="trust-list">
+                  <div class="trust-item">
+                    <strong>Complete webpage analysis</strong>
+                    <span>Submit a public URL and scan the full HTML returned by the website, including forms, scripts, and hidden content.</span>
+                  </div>
+                  <div class="trust-item">
+                    <strong>Gemini AI assessment</strong>
+                    <span>Gemini evaluates page intent, social engineering, and goal hijacking beyond fixed keyword rules.</span>
+                  </div>
+                  <div class="trust-item">
+                    <strong>Safe URL fetching</strong>
+                    <span>Only public HTTP(S) pages are fetched. Private-network and local addresses are rejected.</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="scan-row">
+              <button class="g-btn g-btn-primary" id="scan-btn" type="button">Run scan</button>
+              <button class="g-btn g-btn-outline" id="reset-btn" type="button">Reset URL</button>
+              <span class="scan-note" id="scan-note">Demo history stays in this session only. Aggregate threat-feed counts are stored globally and update live.</span>
+            </div>
+
+            <div class="studio-note">
+              Demo-triggered scans stay out of shared history tables, but they still contribute to the permanent live threat feed for global threat visibility.
+            </div>
+
+            <div class="result-shell" id="result-panel" style="margin-top:1rem"></div>
+          </div>
+        </article>
+
+        <article class="g-card">
+          <div class="g-card-header">
+            <div class="g-card-dots"><div class="g-dot g-dot-r"></div><div class="g-dot g-dot-y"></div><div class="g-dot g-dot-g"></div></div>
+            <span class="g-card-title">Quick action analysis</span>
+          </div>
+          <div class="g-card-body">
+            <div class="studio-grid">
+              <div class="field-stack">
+                <div>
+                  <label class="g-field-label" for="an-action">Action</label>
+                  <input class="g-input" id="an-action" type="text" value="submit login form"/>
+                </div>
+                <div>
+                  <label class="g-field-label" for="an-url">URL</label>
+                  <input class="g-input" id="an-url" type="text" value="https://example.com/login"/>
+                </div>
+                <div>
+                  <label class="g-field-label" for="an-data">Payload context</label>
+                  <input class="g-input" id="an-data" type="text" placeholder="optional metadata or form payload"/>
+                </div>
+                <div class="scan-row" style="margin-top:0">
+                  <button class="g-btn g-btn-primary" id="analyze-btn" type="button">Analyze action</button>
+                  <span class="scan-note" id="analyze-note">Fast safety check for an intended browser action.</span>
+                </div>
+              </div>
+              <div class="signal-list">
+                <div class="signal-item">
+                  <strong>What this catches</strong>
+                  <span>Suspicious domains, destructive actions, and risky submissions before your agent clicks.</span>
+                </div>
+                <div class="signal-item">
+                  <strong>Why it matters</strong>
+                  <span>Founders and early customers want predictable guardrails, not just raw threat scores.</span>
+                </div>
+                <div class="signal-item">
+                  <strong>Best use</strong>
+                  <span>Pair with the full scan result when you are debugging workflow-specific false positives or approvals.</span>
+                </div>
+              </div>
+            </div>
+            <div class="analyze-shell" id="analyze-result" style="margin-top:1rem"></div>
+          </div>
+        </article>
+
+        <article class="g-code-block code-wrap">
+          <div class="g-code-header">
+            <span class="g-code-lang">python | drop-in SDK usage</span>
+            <button class="g-code-copy" id="copy-btn" type="button">Copy</button>
+          </div>
+          <pre class="g-pre" id="sdk-code"><span class="sk">from</span> <span class="sa">guni</span> <span class="sk">import</span> <span class="sf">scan</span>
+
+result = <span class="sf">scan</span>(html=page_html, goal=<span class="ss">"Login to website"</span>)
+
+<span class="sk">if</span> result[<span class="ss">"decision"</span>] == <span class="ss">"BLOCK"</span>:
+    <span class="sk">raise</span> SecurityError(<span class="ss">"Threat detected"</span>)
+
+<span class="sc"># risk: 0-100</span>
+<span class="sc"># breakdown: per-detector evidence</span>
+<span class="sc"># decision: ALLOW / CONFIRM / BLOCK</span></pre>
+        </article>
+      </div>
+
+      <div class="dash-stack">
+        <article class="g-card">
+          <div class="g-card-header">
+            <div class="g-card-dots"><div class="g-dot g-dot-r"></div><div class="g-dot g-dot-y"></div><div class="g-dot g-dot-g"></div></div>
+            <span class="g-card-title">Audit history</span>
+            <button class="g-code-copy" id="refresh-history" type="button">Refresh</button>
+          </div>
+          <div class="g-card-body" style="padding-top:1rem">
+            <div class="status-pill" id="history-status">Loading recent scan decisions</div>
+            <div style="overflow-x:auto;margin-top:1rem">
+              <table class="g-table hist-table">
+                <thead>
+                  <tr>
+                    <th>Time</th>
+                    <th>Goal</th>
+                    <th>URL</th>
+                    <th>Risk</th>
+                    <th>Decision</th>
+                  </tr>
+                </thead>
+                <tbody id="hist-body">
+                  <tr><td colspan="5" class="empty-state">Loading audit history...</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </article>
+
+        <article class="g-card">
+          <div class="g-card-header">
+            <div class="g-card-dots"><div class="g-dot g-dot-r"></div><div class="g-dot g-dot-y"></div><div class="g-dot g-dot-g"></div></div>
+            <span class="g-card-title">Startup readiness signals</span>
+          </div>
+          <div class="g-card-body">
+            <div class="signal-list">
+              <div class="signal-item">
+                <strong>Customer-facing demo flow</strong>
+                <span>Preset attacks and human-readable evidence make the dashboard usable in sales calls and onboarding, not just engineering tests.</span>
+              </div>
+              <div class="signal-item">
+                <strong>Operational clarity</strong>
+                <span>History, latest decision, and block rate give you a quick health signal after each deploy.</span>
+              </div>
+              <div class="signal-item">
+                <strong>Consistent API handling</strong>
+                <span>The UI now works with wrapped JSON responses, which keeps the demo aligned with the production middleware shape.</span>
+              </div>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+  </div>
+</main>
+<div class="demo-cta" id="demo-cta">
+  <div class="demo-cta-inner">
+    <div class="demo-cta-copy"><strong id="demo-cta-text">Protecting your agents starts at ₹999/mo →</strong></div>
+    <a class="g-btn g-btn-primary" id="demo-cta-link" href="/signup?plan=starter&interval=monthly">Go to signup</a>
+    <button class="demo-cta-close" id="demo-cta-close" type="button" aria-label="Dismiss CTA">×</button>
+  </div>
+</div>
+
+<script>
+const API = window.location.origin;
+const DEMO_HISTORY_KEY = "guni_demo_history";
+const urlInput = document.getElementById("url-in");
+const goalInput = document.getElementById("goal-in");
+const apiKeyInput = document.getElementById("apikey-in");
+const resultPanel = document.getElementById("result-panel");
+const analyzePanel = document.getElementById("analyze-result");
+const demoCta = document.getElementById("demo-cta");
+const THREAT_FEED_SIGNAL_KEY = "guni_threat_feed_refresh";
+const threatFeedChannel = typeof BroadcastChannel !== "undefined" ? new BroadcastChannel("guni-threat-feed") : null;
+let ctaDismissed = false;
+
+function setDemoCtaCopy(text, href = "/signup?plan=starter&interval=monthly", buttonLabel = "Go to signup") {
+  document.getElementById("demo-cta-text").textContent = text;
+  document.getElementById("demo-cta-link").href = href;
+  document.getElementById("demo-cta-link").textContent = buttonLabel;
+}
+
+function showDemoCta() {
+  if (ctaDismissed) return;
+  demoCta.classList.add("show");
+}
+
+function dismissDemoCta() {
+  ctaDismissed = true;
+  demoCta.classList.remove("show");
+}
+
+function loadDemoHistoryState() {
+  try {
+    const raw = sessionStorage.getItem(DEMO_HISTORY_KEY);
+    const parsed = raw ? JSON.parse(raw) : [];
+    return Array.isArray(parsed) ? parsed : [];
+  } catch (error) {
+    return [];
+  }
+}
+
+function saveDemoHistoryState(entries) {
+  sessionStorage.setItem(DEMO_HISTORY_KEY, JSON.stringify(entries.slice(0, 20)));
+}
+
+function appendDemoHistoryEntry(entry) {
+  const entries = loadDemoHistoryState();
+  entries.unshift(entry);
+  saveDemoHistoryState(entries);
+  renderHistory(loadDemoHistoryState());
+}
+
+function notifyThreatFeedRefresh() {
+  const stamp = String(Date.now());
+  try {
+    localStorage.setItem(THREAT_FEED_SIGNAL_KEY, stamp);
+  } catch (error) {
+    // Ignore local storage write failures.
+  }
+  if (threatFeedChannel) {
+    threatFeedChannel.postMessage({ type: "refresh", at: stamp });
+  }
+}
+
+function esc(value) {
+  return String(value ?? "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;");
+}
+
+function unwrapPayload(payload) {
+  if (payload && typeof payload === "object" && "success" in payload && "data" in payload) {
+    return payload.data || {};
+  }
+  return payload || {};
+}
+
+async function requestJson(path, options = {}) {
+  const response = await fetch(`${API}${path}`, options);
+  const payload = await response.json();
+  if (!response.ok) {
+    const error = new Error(payload.error || payload.detail || `API error ${response.status}`);
+    error.status = response.status;
+    throw error;
+  }
+  return unwrapPayload(payload);
+}
+
+function barTone(category) {
+  if (["injection", "phishing", "goal_mismatch", "csrf", "clickjacking"].includes(category)) return "g-bar-r";
+  if (["deception", "scripts", "redirect"].includes(category)) return "g-bar-a";
+  return "g-bar-g";
+}
+
+function renderResult(data) {
+  const evidence = data.evidence || {};
+  const breakdown = data.breakdown || {};
+  const llm = data.llm_analysis;
+  const usingGemini = Boolean(llm && !llm.error && llm.provider === "gemini");
+  const flatEvidence = [];
+
+  Object.entries(evidence).forEach(([category, items]) => {
+    if (!Array.isArray(items)) return;
+    items.forEach((item) => flatEvidence.push({ category, item }));
+  });
+
+  const displayBreakdown = usingGemini
+    ? Object.fromEntries((llm.threats || []).map((threat) => [
+        threat.type || "AI assessment",
+        Math.round(Number(threat.confidence || 0) * 100),
+      ]))
+    : breakdown;
+  const breakdownHtml = Object.entries(displayBreakdown).map(([key, value]) => `
+    <div class="breakdown-row">
+      <span>${esc(key.replaceAll("_", " "))}</span>
+      <div class="g-bar-wrap"><div class="g-bar ${barTone(key)}" style="width:${Math.min(Number(value) || 0, 100)}%"></div></div>
+      <span>${esc(value)}</span>
+    </div>
+  `).join("") || `<div class="empty-state">No detector breakdown returned.</div>`;
+
+  const displayEvidence = usingGemini
+    ? (llm.threats || []).map((threat) => ({
+        category: threat.type || "Gemini assessment",
+        item: threat.evidence || threat.reasoning || "No supporting evidence returned.",
+      }))
+    : flatEvidence;
+  const evidenceHtml = displayEvidence.length
+    ? displayEvidence.map(({ category, item }) => `
+      <div class="evidence-item">
+        <strong>${esc(category.replaceAll("_", " "))}</strong>
+        <span>${esc(item)}</span>
+      </div>
+    `).join("")
+    : `<div class="evidence-item safe"><strong>No threats detected</strong><span>The scanned payload did not produce any evidence.</span></div>`;
+
+  const llmHtml = llm && !llm.error && llm.summary
+    ? `<div class="llm-box"><strong>${usingGemini ? "Gemini AI analysis" : "AI analysis"}</strong><div>${esc(llm.summary)}</div></div>`
+    : llm && llm.error
+      ? `<div class="studio-note"><strong>Gemini was unavailable.</strong> ${esc(llm.error)} The score below is the deterministic fallback.</div>`
+      : `<div class="studio-note"><strong>Gemini is not configured.</strong> The score below is the deterministic fallback. Set GEMINI_API_KEY and restart the server.</div>`;
+
+  resultPanel.innerHTML = `
+    <div class="g-card" style="margin-top:1rem;background:rgba(255,255,255,0.02)">
+      <div class="g-card-body">
+        <div class="decision-row">
+          <span class="g-decision ${esc(data.decision || "ALLOW")}">${esc(data.decision || "ALLOW")}</span>
+          <span class="risk-copy">Risk score: <strong>${esc(data.risk ?? 0)}/100</strong></span>
+          <span class="latency">${Number(data.total_latency || 0).toFixed(4)}s</span>
+        </div>
+        <div class="g-field-label" style="margin-bottom:0.7rem">${usingGemini ? "Gemini threat confidence" : "Fallback detector breakdown"}</div>
+        <div class="breakdown-list">${breakdownHtml}</div>
+        <div class="g-field-label" style="margin:1rem 0 0.7rem">${usingGemini ? "Gemini evidence" : "Fallback evidence"}</div>
+        <div class="evidence-list">${evidenceHtml}</div>
+        ${llmHtml}
+      </div>
+    </div>
+  `;
+  resultPanel.classList.add("show");
+  showDemoCta();
+}
+
+function renderAnalyzeResult(data) {
+  const decision = String(data.decision || "allow").toUpperCase();
+  const badge = decision === "RISKY" ? "CONFIRM" : decision === "BLOCK" ? "BLOCK" : "ALLOW";
+  const confidence = typeof data.confidence === "number" ? `${Math.round(data.confidence * 100)}% confidence` : "No confidence score";
+  analyzePanel.innerHTML = `
+    <div class="g-card" style="background:rgba(255,255,255,0.02)">
+      <div class="g-card-body">
+        <div class="decision-row">
+          <span class="g-decision ${badge}">${esc(decision)}</span>
+          <span class="risk-copy"><strong>${esc(confidence)}</strong></span>
+        </div>
+        <div class="signal-item">
+          <strong>Reason</strong>
+          <span>${esc(data.reason || "No reason provided.")}</span>
+        </div>
+      </div>
+    </div>
+  `;
+  analyzePanel.classList.add("show");
+}
+
+function showError(panel, title, detail) {
+  panel.innerHTML = `
+    <div class="g-card" style="background:rgba(240,64,64,0.06);border-color:rgba(240,64,64,0.2)">
+      <div class="g-card-body">
+        <div class="decision-row">
+          <span class="g-decision BLOCK">${esc(title)}</span>
+        </div>
+        <div class="signal-item">
+          <strong>Problem</strong>
+          <span>${esc(detail)}</span>
+        </div>
+      </div>
+    </div>
+  `;
+  panel.classList.add("show");
+}
+
+async function runScan() {
+  const scanBtn = document.getElementById("scan-btn");
+  const note = document.getElementById("scan-note");
+  const url = urlInput.value.trim();
+  const goal = goalInput.value.trim() || "browse website";
+
+  if (!url) {
+    note.textContent = "Enter a public webpage URL before running a scan.";
+    return;
+  }
+
+  scanBtn.disabled = true;
+  scanBtn.innerHTML = '<span class="g-spinner"></span>';
+  note.textContent = "Fetching and scanning the complete webpage...";
+  resultPanel.classList.remove("show");
+
+  try {
+    const headers = { "Content-Type": "application/json" };
+    headers["X-Guni-Demo"] = "1";
+    if (apiKeyInput.value.trim()) {
+      headers["X-API-Key"] = apiKeyInput.value.trim();
+    }
+
+    const data = await requestJson(`/scan/url`, {
+      method: "POST",
+      headers,
+      body: JSON.stringify({ url, goal, llm: true, llm_provider: "gemini" })
+    });
+    renderResult(data);
+    note.textContent = `Scan complete in ${Number(data.total_latency || 0).toFixed(4)}s.`;
+    appendDemoHistoryEntry({
+      timestamp: new Date().toISOString(),
+      url: data.url || url,
+      goal: data.goal || goal,
+      risk: data.risk ?? 0,
+      decision: data.decision || "ALLOW",
+      latency: data.total_latency || 0,
+    });
+    notifyThreatFeedRefresh();
+  } catch (error) {
+    note.textContent = "Scan failed.";
+    if (error?.status === 402) {
+      setDemoCtaCopy("Scan quota reached. Upgrade to keep scanning →");
+      showDemoCta();
+    }
+    showError(resultPanel, "API offline", error.message || "Could not reach /scan.");
+  } finally {
+    scanBtn.disabled = false;
+    scanBtn.textContent = "Run scan";
+  }
+}
+
+async function runAnalyze() {
+  const analyzeBtn = document.getElementById("analyze-btn");
+  const note = document.getElementById("analyze-note");
+  const action = document.getElementById("an-action").value.trim();
+  const url = document.getElementById("an-url").value.trim();
+  const data = document.getElementById("an-data").value.trim();
+
+  if (!action || !url) {
+    note.textContent = "Add both an action and a URL first.";
+    return;
+  }
+
+  analyzeBtn.disabled = true;
+  analyzeBtn.innerHTML = '<span class="g-spinner"></span>';
+  note.textContent = "Checking action safety...";
+  analyzePanel.classList.remove("show");
+
+  try {
+    const responseData = await requestJson(`/analyze`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ action, url, data: data || null })
+    });
+
+    renderAnalyzeResult(responseData);
+    note.textContent = "Action analysis complete.";
+  } catch (error) {
+    note.textContent = "Action analysis failed.";
+    showError(analyzePanel, "Action blocked", error.message || "Could not reach /analyze.");
+  } finally {
+    analyzeBtn.disabled = false;
+    analyzeBtn.textContent = "Analyze action";
+  }
+}
+
+function updateTopMetrics(entries) {
+  const total = entries.length;
+  const blocked = entries.filter((entry) => entry.decision === "BLOCK").length;
+  const confirmed = entries.filter((entry) => entry.decision === "CONFIRM").length;
+  const allowed = entries.filter((entry) => entry.decision === "ALLOW").length;
+  const highestRisk = entries.reduce((max, entry) => Math.max(max, Number(entry.risk) || 0), 0);
+  const lastDecision = entries[0]?.decision || "NONE";
+  const blockRate = total ? `${Math.round((blocked / total) * 100)}%` : "0%";
+
+  document.getElementById("metric-total").textContent = total.toLocaleString();
+  document.getElementById("metric-rate").textContent = blockRate;
+  document.getElementById("metric-risk").textContent = String(highestRisk);
+  document.getElementById("metric-last").textContent = lastDecision;
+
+  document.getElementById("m-scans").textContent = total.toLocaleString();
+  document.getElementById("m-blocked").textContent = blocked.toLocaleString();
+  document.getElementById("m-confirm").textContent = confirmed.toLocaleString();
+  document.getElementById("m-allow").textContent = allowed.toLocaleString();
+}
+
+function renderHistory(entries) {
+  const tbody = document.getElementById("hist-body");
+  const status = document.getElementById("history-status");
+
+  if (!entries.length) {
+    tbody.innerHTML = '<tr><td colspan="5" class="empty-state">No scans yet. Run one from the scan studio.</td></tr>';
+    status.textContent = "No session demo history";
+    updateTopMetrics(entries);
+    return;
+  }
+
+  tbody.innerHTML = entries.map((entry) => {
+    const time = entry.timestamp ? (entry.timestamp.split("T")[1] || entry.timestamp) : "--";
+    const url = entry.url || "--";
+    return `
+      <tr>
+        <td>${esc(time)}</td>
+        <td class="goal-col" title="${esc(entry.goal || "")}">${esc((entry.goal || "--").slice(0, 28))}</td>
+        <td class="url-col" title="${esc(url)}">${esc(url.slice(0, 28))}</td>
+        <td>${esc(entry.risk ?? 0)}</td>
+        <td><span class="g-decision ${esc(entry.decision || "ALLOW")}">${esc(entry.decision || "ALLOW")}</span></td>
+      </tr>
+    `;
+  }).join("");
+
+  status.textContent = `Showing ${entries.length} session-only demo decisions`;
+  updateTopMetrics(entries);
+}
+
+async function loadHistory() {
+  renderHistory(loadDemoHistoryState());
+}
+
+function copySnippet() {
+  const snippet = `from guni import scan
+
+result = scan(html=page_html, goal="Login to website")
+
+if result["decision"] == "BLOCK":
+    raise SecurityError("Threat detected")
+`;
+  const button = document.getElementById("copy-btn");
+  navigator.clipboard.writeText(snippet).then(() => {
+    button.textContent = "Copied";
+    window.setTimeout(() => {
+      button.textContent = "Copy";
+    }, 1400);
+  });
+}
+
+document.getElementById("scan-btn").addEventListener("click", runScan);
+document.getElementById("analyze-btn").addEventListener("click", runAnalyze);
+document.getElementById("refresh-history").addEventListener("click", loadHistory);
+document.getElementById("copy-btn").addEventListener("click", copySnippet);
+document.getElementById("reset-btn").addEventListener("click", () => {
+  urlInput.value = "https://example.com";
+  goalInput.value = "Login to website";
+  resultPanel.classList.remove("show");
+});
+document.getElementById("demo-cta-close").addEventListener("click", dismissDemoCta);
+
+window.addEventListener("load", () => {
+  setDemoCtaCopy("Protecting your agents starts at ₹999/mo →");
+  loadHistory();
+  window.setTimeout(showDemoCta, 30000);
+});
+</script>
+</body>
+</html>
